@@ -70,8 +70,8 @@ class irc:
         if (time.time() - last_ping) > threshold:
             sys.exit()
 
-    def get_message(self, data):
-        return re.match(r'^:(?P<username>.*?)!.*?PRIVMSG (?P<channel>.*?) :(?P<message>.*)', data).groupdict()
+    #def get_message(self, data):
+    #    return re.match(r'^:(?P<username>.*?)!.*?PRIVMSG (?P<channel>.*?) :(?P<message>.*)', data).groupdict()
 
     def check_login_status(self, data):
         if re.match(r'^:(testserver\.local|tmi\.twitch\.tv) NOTICE \* :Login unsuccessful\r\n$', data):
