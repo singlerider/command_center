@@ -16,9 +16,7 @@ import sched
 import time
 import threading
 
-
 END = False
-
 
 class Roboraj(object):
 
@@ -40,10 +38,20 @@ class Roboraj(object):
                     continue
 
                 message_dict = self.irc.get_message(data)
-                print "message_dict:",message_dict
                 channel = message_dict['channel']
                 message = message_dict['message']
                 username = message_dict['username']
+                message_dict['time'] = time.time()
+                sent_at = message_dict['time']
+                resp0 = '%s' % (username)
+                resp1 = '%s' % (channel)
+                resp2 = '%s' % (message)
+                #print "username", username
+                #print "channel", channel
+                #print "message", message
+                #self.irc.send_message(channel, resp0)
+                #self.irc.send_message(channel, resp1)
+                #self.irc.send_message(channel, resp2)
 
                 # check if message is a command with no arguments
                 part = message.split(' ')[0]
@@ -72,8 +80,6 @@ class Roboraj(object):
         if command == message:
             args = []
 
-        # TEMPORARY COMMAND IGNORES FOR shedeviil_09
-
         elif command == message and command in commands.keys():
             print "Yes, it is in commands"
 
@@ -84,8 +90,6 @@ class Roboraj(object):
         if not commands.check_is_space_case(command) and args:
             # if it's not space case, break the arg apart
             args = args[0].split(" ")
-
-        # print("Command:", command, "args", args)
 
         # check cooldown.
         if commands.is_on_cooldown(command, channel):
@@ -106,20 +110,19 @@ class Roboraj(object):
             self.irc.send_message(channel, resp)
             return
 
+        ##### USER LEVEL CHECKING WILL NEED REVISION
         # if there's a required userlevel, validate it.
-        if commands.check_has_ul(username, command):
-            if username not in user_dict["chatters"]["moderators"]:
-                if username != 'singlerider':
-                    resp = '(%s) : %s' % (
-                        username, "This is a moderator-only command!")
-                    pbot(resp, channel)
-                    self.irc.send_message(channel, resp)
-                    return
+        #if commands.check_has_ul(username, command):
+        #    if username not in user_dict["chatters"]["moderators"]:
+        #        resp = '(%s) : %s' % (
+        #            username, "This is a moderator-only command!")
+        #        pbot(resp, channel)
+        #        self.irc.send_message(channel, resp)
+        #        return
 
         result = commands.pass_to_function(command, args)
         commands.update_last_used(command, channel)
 
-        #pbot("Command %s(%s) had a result of %s" % (command, args, result), channel)
         if result:
             resp = '(%s) : %s' % (username, result)
             pbot(resp, channel)
