@@ -40,11 +40,10 @@ class Roboraj(object):
                     continue
 
                 message_dict = self.irc.get_message(data)
+                print "message_dict:",message_dict
                 channel = message_dict['channel']
-                globals.global_channel = channel.lstrip('#')
-                message = message_dict['message']  # .lower()
+                message = message_dict['message']
                 username = message_dict['username']
-                globals.CURRENT_USER = username
 
                 # check if message is a command with no arguments
                 part = message.split(' ')[0]

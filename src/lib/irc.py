@@ -35,15 +35,15 @@ class irc:
         return line
 
     def check_for_message(self, data):
-        if re.match(r'^:[a-zA-Z0-9_]+\![a-zA-Z0-9_]+@[a-zA-Z0-9_]+(\.tmi\.twitch\.tv|\.testserver\.local) PRIVMSG #[a-zA-Z0-9_]+ :.+$', data):
+        if re.match(r'^:[a-zA-Z0-9_]+\![a-zA-Z0-9_]+@(irc\.tinyspeck\.com|\.testserver\.local) PRIVMSG #[a-zA-Z0-9_]+ :.+$', data):
             return True
 
     def check_for_join(self, data):
-        if re.match(r'^:[a-zA-Z0-9_]+\![a-zA-Z0-9_]+@[a-zA-Z0-9_]+(\.tmi\.twitch\.tv|\.testserver\.local) JOIN #[a-zA-Z0-9_]', data):
+        if re.match(r'^:[a-zA-Z0-9_]+\![a-zA-Z0-9_]+@(irc\.tinyspeck\.com|\.testserver\.local) JOIN #[a-zA-Z0-9_]', data):
             return True
 
     def check_for_part(self, data):
-        if re.match(r'^:[a-zA-Z0-9_]+\![a-zA-Z0-9_]+@[a-zA-Z0-9_]+(\.tmi\.twitch\.tv|\.testserver\.local) PART #[a-zA-Z0-9_]', data):
+        if re.match(r'^:[a-zA-Z0-9_]+\![a-zA-Z0-9_]+@(irc\.tinyspeck\.com|\.testserver\.local) PART #[a-zA-Z0-9_]', data):
             return True
 
     def check_is_command(self, message, valid_commands):
@@ -70,11 +70,11 @@ class irc:
         if (time.time() - last_ping) > threshold:
             sys.exit()
 
-    #def get_message(self, data):
-    #    return re.match(r'^:(?P<username>.*?)!.*?PRIVMSG (?P<channel>.*?) :(?P<message>.*)', data).groupdict()
+    def get_message(self, data):
+        return re.match(r'^:(?P<username>.*?)!.*?PRIVMSG (?P<channel>.*?) :(?P<message>.*)', data).groupdict()
 
     def check_login_status(self, data):
-        if re.match(r'^:(testserver\.local|tmi\.twitch\.tv) NOTICE \* :Login unsuccessful\r\n$', data):
+        if re.match(r'^:(testserver\.local|irc\.tinyspeck\.com) NOTICE \* :Login unsuccessful\r\n$', data):
             return False
         else:
             return True
