@@ -17,7 +17,6 @@ config = {
     'server': 'YOURSLACKCHANNEL.irc.slack.com',
     'port': 6667,
     'username': 'YOURREGISTEREDSLACKUSERNAME',
-    # get this from http://twitchapps.com/tmi/
     'password': 'YOURSLACKCHANNEL.passwordhash72h349242hndas',
 
     'debug': True,
