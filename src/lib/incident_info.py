@@ -2,6 +2,8 @@ import src.bot
 import lib.irc as irc_
 from threading import Thread
 
+contacts = {"personnel": []}
+
 class IndividualInfo(object, channel, Thread):
 
     def __init__(self, config, irc, channel, user):
@@ -32,7 +34,7 @@ class IndividualInfo(object, channel, Thread):
     def question(name=None, topic):
         resp = ""
         if name != None:
-            resp = "What is {}'s {}?".format(name, topic)
+            resp = "What is {}'s {}?".format(name, topic.replace("_", " "))
         else:
             resp = "What is this person's name?"
         self.irc.send_message(channel, resp)
