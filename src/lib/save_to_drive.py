@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#! /usr/bin/python2.7
 # -*- coding: utf-8 -*-
 
 #channel/channel_year_month_day.txt
@@ -37,7 +37,7 @@ def save_file_to_drive(log, channel, data): # log = filename to save as, data = 
 
     drive = GoogleDrive(gauth)
 
-    title = '{}_{}.txt'.format(channel, time.strftime('%Y_%m_%d'))
+    title = '{0}_{1}.txt'.format(channel, time.strftime('%Y_%m_%d'))
     log = drive.CreateFile({'title': title})
     log.SetContentString('Temporary')
     log.Upload(param={'convert': True}) # Files.insert()
@@ -56,7 +56,7 @@ def get_log_contents(folder, date, log_files):
         channel = log.rstrip(".txt").split("/")[3]
         filename = channel + ".txt"
         print channel
-        with open("{}{}".format(folder, filename), 'r') as f:
+        with open("{0}{1}".format(folder, filename), 'r') as f:
             data = f.read()
             save_file_to_drive(log, channel, data)
 
@@ -64,10 +64,10 @@ def get_log_contents(folder, date, log_files):
 def get_log_files():
     log_files = []
     date = time.strftime('%Y_%m_%d', time.gmtime())
-    folder = 'src/logs/{}/'.format(date)
+    folder = 'src/logs/{0}/'.format(date)
     for log in os.listdir(folder):
         if log.endswith(".txt"):
-            log_files.append("{}{}".format(folder, log))
+            log_files.append("{0}{1}".format(folder, log))
     print log_files
     get_log_contents(folder, date, log_files)
 
