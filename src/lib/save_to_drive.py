@@ -2,13 +2,25 @@
 
 from pydrive.auth import GoogleAuth
 from pydrive.drive import GoogleDrive
-import time
-
 from apiclient.discovery import build
 from oauth2client.client import SignedJwtAssertionCredentials
+import time
+
+def get_log_files(channel):
+    log_files = []
+    folder = 'src/logs/{}_{}/'.format(channel.lstrip("#"),
+        time.strftime('%Y_%m_%d'))
+    for log in os.listdir(folder):
+        if log.endswith(".txt"):
+            log_files.append("{}{}").format(folder, log)
+    return log_files
 
 
-def save_file(channel, data): # filename to save as, data is the content (messages to save)
+def get_log_contents():
+    pass
+
+
+def save_file_to_drive(channel, data): # filename to save as, data is the content (messages to save)
     """Gets valid user credentials from storage.
 
     If nothing has been stored, or if the stored credentials are invalid,
@@ -21,7 +33,7 @@ def save_file(channel, data): # filename to save as, data is the content (messag
     # from google API console - convert private key to base64 or load from file
     gauth = GoogleAuth()
     # Try to load saved client credentials
-    gauth.LoadCredentialsFile("mycreds.txt")
+    gauth.LoadCredentialsFile("credentials.txt")
     if gauth.credentials is None:
         print "No creds file"
         # Authenticate if they're not there
@@ -33,7 +45,7 @@ def save_file(channel, data): # filename to save as, data is the content (messag
         # Initialize the saved creds
         gauth.Authorize()
     # Save the current credentials to a file
-    gauth.SaveCredentialsFile("mycreds.txt")
+    gauth.SaveCredentialsFile("credentials.txt")
 
     drive = GoogleDrive(gauth)
 
@@ -61,5 +73,3 @@ def save_file(channel, data): # filename to save as, data is the content (messag
       for log in file_list:
         print 'title: %s, id: %s' % (log['title'], log['id'])
     """
-
-save_file("#general", "FAKE message")

@@ -5,3 +5,4 @@ config.py
 venv/*
 **.json
 **.txt
+src/logs/*

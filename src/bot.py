@@ -15,8 +15,25 @@ import traceback
 import sched
 import time
 import threading
+import os
 
 END = False
+
+def write_to_log(channel, username, message):
+    date = time.strftime('%Y_%m_%d')
+    filename = 'src/logs/{}/{}.txt'.format(date, channel.lstrip("#"))
+    timestamp = time.strftime("%H:%M:%SZ", time.gmtime())
+    try:
+        with open(filename, 'a') as f:
+            f.write("{} | {} : {}\n".format(username,
+                timestamp, str(message)))
+    except Exception as error:
+        foldername = 'src/logs/{}_{}'.format(channel.lstrip("#"),
+            time.strftime('%Y_%m_%d'))
+        os.system("mkdir src/logs/{}".format(date))
+        print str(error) + ": Creating new folder: " + str(date)
+        write_to_log(channel, username, message)
+
 
 class Roboraj(object):
 
@@ -46,14 +63,7 @@ class Roboraj(object):
                 resp0 = '%s' % (username)
                 resp1 = '%s' % (channel)
                 resp2 = '%s' % (message)
-                #print "username", username
-                #print "channel", channel
-                #print "message", message
-                #self.irc.send_message(channel, resp0)
-                #self.irc.send_message(channel, resp1)
-                #self.irc.send_message(channel, resp2)
-
-                # check if message is a command with no arguments
+                write_to_log(channel, username, message)
                 part = message.split(' ')[0]
                 valid = False
                 if commands.is_valid_command(message):
