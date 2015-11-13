@@ -18,7 +18,7 @@ It is possible to set up an environment with 2.7, even if your server's primary
 env is 2.6 or earlier. With your favorite package manager, install `python2.7`
 using one of the various online guides. Once that's done, install the
 dependencies as outlined below, with the exception of replacing `pip` with
-`pip-2.7` .
+`pip-2.7`.
 
 ### Pre-game
 
