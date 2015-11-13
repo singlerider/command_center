@@ -1,4 +1,8 @@
-﻿global config
+global config
+import src.lib.save_to_drive as save_to_drive
+import time
+
+previous_date = time.strftime('%Y_%m_%d', time.gmtime())
 
 """
 Head over to
@@ -16,8 +20,12 @@ config = {
     # details required to login to twitch IRC server
     'server': 'YOURSLACKCHANNEL.irc.slack.com',
     'port': 6667,
-    'username': 'YOURREGISTEREDSLACKUSERNAME',
-    'password': 'YOURSLACKCHANNEL.passwordhash72h349242hndas',
+    'username': 'YOURUSERNAME',
+    'password': 'YOURPASSWORD,
+
+    'google_api': "", # API Key
+    'google_client': "", # Client ID
+    'google_secret': "", # Client Secret
 
     'debug': True,
     'log_messages': True,
@@ -26,8 +34,8 @@ config = {
 
     # Cron jobs.
     'cron': {
-        '#example_channel': [
-
+        '#general': [
+            (60, True, save_to_drive.cron) # run cron job every 60 seconds
         ],
     },
 }

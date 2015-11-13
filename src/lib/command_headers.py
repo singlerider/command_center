@@ -17,12 +17,6 @@ commands = {
         'return': 'command',
         'usage': '!channels',
     },
-    '!save_to_drive': {
-        'limit': 0,
-        'return': 'command',
-        'usage': '!save_to_drive'
-    }
-
 }
 
 

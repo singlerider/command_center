@@ -28,9 +28,10 @@ def write_to_log(channel, username, message):
     timestamp = time.strftime("%H:%M:%SZ", time.gmtime())
     message = "".join(i for i in message if ord(i)<128) # fix up non ascii chars
     try:
+        pass
         with open(filename, 'a') as f:
             f.write("{} | {} : {}\n".format(username,
-                timestamp, message.encode("utf-8")))
+                timestamp, str(message)))
     except Exception as error:
         foldername = 'src/logs/{}_{}'.format(channel.lstrip("#"),
             time.strftime('%Y_%m_%d'))
