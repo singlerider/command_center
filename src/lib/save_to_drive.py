@@ -25,7 +25,7 @@ def save_file_to_drive(log, channel, data): # log = filename to save as, data = 
     if gauth.credentials is None:
         print "No creds file"
         # Authenticate if they're not there
-        gauth.LocalWebserverAuth()
+        gauth.CommandLineAuth()
     elif gauth.access_token_expired:
         # Refresh them if expired
         gauth.Refresh()
