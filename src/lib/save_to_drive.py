@@ -1,3 +1,6 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+
 #channel/channel_year_month_day.txt
 
 from pydrive.auth import GoogleAuth
@@ -5,29 +8,14 @@ from pydrive.drive import GoogleDrive
 from apiclient.discovery import build
 from oauth2client.client import SignedJwtAssertionCredentials
 import time
+import os
 
-def get_log_files(channel):
-    log_files = []
-    folder = 'src/logs/{}_{}/'.format(channel.lstrip("#"),
-        time.strftime('%Y_%m_%d'))
-    for log in os.listdir(folder):
-        if log.endswith(".txt"):
-            log_files.append("{}{}").format(folder, log)
-    return log_files
-
-
-def get_log_contents():
-    pass
-
-
-def save_file_to_drive(channel, data): # filename to save as, data is the content (messages to save)
+def save_file_to_drive(log, channel, data): # log = filename to save as, data = the content (messages to save)
     """Gets valid user credentials from storage.
-
     If nothing has been stored, or if the stored credentials are invalid,
     the OAuth2 flow is completed to obtain the new credentials.
-
     Returns:
-        Credentials, the obtained credential.
+    Credentials, the obtained credential.
     """
 
     # from google API console - convert private key to base64 or load from file
@@ -49,7 +37,7 @@ def save_file_to_drive(channel, data): # filename to save as, data is the conten
 
     drive = GoogleDrive(gauth)
 
-    title = '{}_{}.txt'.format(channel.lstrip("#"), time.strftime('%Y_%m_%d'))
+    title = '{}_{}.txt'.format(channel, time.strftime('%Y_%m_%d'))
     log = drive.CreateFile({'title': title})
     log.SetContentString('Temporary')
     log.Upload(param={'convert': True}) # Files.insert()
@@ -58,18 +46,27 @@ def save_file_to_drive(channel, data): # filename to save as, data is the conten
     log.Upload(param={'convert': True}) # Files.patch()
 
     content = log.GetContentString()  # 'Hello'
-    log.SetContentString(data)  # 'Hello World!'
+    log.SetContentString(data)
     log.Upload(param={'convert': True}) # Files.update()
 
-    """
-    # Auto-iterate through all files that matches this query
-    file_list = drive.ListFile({'q': "'root' in parents"}).GetList()
-    for log in file_list:
-      print 'title: %s, id: %s' % (log['title'], log['id'])
 
-    # Paginate file lists by specifying number of max results
-    for file_list in drive.ListFile({'maxResults': 10}):
-      print 'Received %s files from Files.list()' % len(file_list) # <= 10
-      for log in file_list:
-        print 'title: %s, id: %s' % (log['title'], log['id'])
-    """
+def get_log_contents(folder, date, log_files):
+    for log in log_files:
+    #for log in os.listdir(folder):
+        channel = log.rstrip(".txt").split("/")[3]
+        filename = channel + ".txt"
+        print channel
+        with open("{}{}".format(folder, filename), 'r') as f:
+            data = f.read().encode("utf-8")
+            save_file_to_drive(log, channel, data)
+
+
+def get_log_files():
+    log_files = []
+    date = time.strftime('%Y_%m_%d', time.gmtime())
+    folder = 'src/logs/{}/'.format(date)
+    for log in os.listdir(folder):
+        if log.endswith(".txt"):
+            log_files.append("{}{}".format(folder, log))
+    print log_files
+    get_log_contents(folder, date, log_files)

@@ -1,3 +1,6 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+
 """
 Command Center for Software Development Emergencies!!!!!!!!
 
@@ -20,13 +23,14 @@ import os
 END = False
 
 def write_to_log(channel, username, message):
-    date = time.strftime('%Y_%m_%d')
+    date = time.strftime('%Y_%m_%d', time.gmtime())
     filename = 'src/logs/{}/{}.txt'.format(date, channel.lstrip("#"))
     timestamp = time.strftime("%H:%M:%SZ", time.gmtime())
+    message = "".join(i for i in message if ord(i)<128) # fix up non ascii chars
     try:
         with open(filename, 'a') as f:
             f.write("{} | {} : {}\n".format(username,
-                timestamp, str(message)))
+                timestamp, message.encode("utf-8")))
     except Exception as error:
         foldername = 'src/logs/{}_{}'.format(channel.lstrip("#"),
             time.strftime('%Y_%m_%d'))

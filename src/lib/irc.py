@@ -8,7 +8,6 @@ import thread
 
 threshold = 5 * 60  # five minutes, make this whatever you want
 
-
 class irc:
 
     def __init__(self, config):
