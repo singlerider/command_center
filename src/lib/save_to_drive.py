@@ -71,6 +71,7 @@ def get_log_files():
     print log_files
     get_log_contents(folder, date, log_files)
 
+
 def cron(channel):  # todo remove this arg requirement.
     from config import previous_date
     current_date = time.strftime('%Y_%m_%d', time.gmtime())
@@ -78,3 +79,6 @@ def cron(channel):  # todo remove this arg requirement.
         previous_date = current_date
         print "Saving files (by channel):"
         return get_log_files()
+
+if __name__ == "__main__":
+    save_file_to_drive("TESTFILE.txt", "#fakechannel", "TESTDATA")
