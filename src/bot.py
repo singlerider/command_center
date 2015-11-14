@@ -21,19 +21,20 @@ import os
 
 END = False
 
+
 def write_to_log(channel, username, message):
-    date = time.strftime('%Y_%m_%d', time.gmtime())
-    filename = 'src/logs/{}/{}.txt'.format(date, channel.lstrip("#"))
+    date = time.strftime("%Y_%m_%d", time.gmtime())
+    filename = "src/logs/{}/{}.txt".format(date, channel.lstrip("#"))
     timestamp = time.strftime("%H:%M:%SZ", time.gmtime())
-    message = "".join(i for i in message if ord(i)<128) # fix up non ascii chars
+    message = "".join(i for i in message if ord(i) < 128)  # fix up non ascii
     try:
         pass
-        with open(filename, 'a') as f:
+        with open(filename, "a") as f:
             f.write("{} | {} : {}\n".format(username,
-                timestamp, str(message)))
+                    timestamp, str(message)))
     except Exception as error:
-        foldername = 'src/logs/{}_{}'.format(channel.lstrip("#"),
-            time.strftime('%Y_%m_%d'))
+        foldername = "src/logs/{}_{}".format(channel.lstrip("#"),
+                time.strftime("%Y_%m_%d"))
         os.system("mkdir src/logs/{}".format(date))
         print str(error) + ": Creating new folder: " + str(date)
         write_to_log(channel, username, message)
@@ -59,16 +60,16 @@ class Roboraj(object):
                     continue
 
                 message_dict = self.irc.get_message(data)
-                channel = message_dict['channel']
-                message = message_dict['message']
-                username = message_dict['username']
-                message_dict['time'] = time.time()
-                sent_at = message_dict['time']
-                resp0 = '%s' % (username)
-                resp1 = '%s' % (channel)
-                resp2 = '%s' % (message)
+                channel = message_dict["channel"]
+                message = message_dict["message"]
+                username = message_dict["username"]
+                message_dict["time"] = time.time()
+                sent_at = message_dict["time"]
+                resp0 = "%s" % (username)
+                resp1 = "%s" % (channel)
+                resp2 = "%s" % (message)
                 write_to_log(channel, username, message)
-                part = message.split(' ')[0]
+                part = message.split(" ")[0]
                 valid = False
                 if commands.is_valid_command(message):
                     valid = True
@@ -102,33 +103,32 @@ class Roboraj(object):
             args = [message[len(command) + 1:]]
 
         if not commands.check_is_space_case(command) and args:
-            # if it's not space case, break the arg apart
+            # if it"s not space case, break the arg apart
             args = args[0].split(" ")
 
         # check cooldown.
         if commands.is_on_cooldown(command, channel):
-            pbot('Command is on cooldown. (%s) (%s) (%ss remaining)' % (
-                command, username, commands.get_cooldown_remaining(command, channel)),
-                channel
-            )
+            pbot("Command is on cooldown. (%s) (%s) (%ss remaining)" % (
+                command, username, commands.get_cooldown_remaining(command,
+                        channel)), channel)
             return
-        pbot('Command is valid and not on cooldown. (%s) (%s)' %
+        pbot("Command is valid and not on cooldown. (%s) (%s)" %
              (command, username), channel)
 
         # Check for and handle the simple non-command case.
         cmd_return = commands.get_return(command)
         if cmd_return != "command":
-            # it's a return = "some message here" kind of function
-            resp = '(%s) : %s' % (username, cmd_return)
+            # it"s a return = "some message here" kind of function
+            resp = "(%s) : %s" % (username, cmd_return)
             commands.update_last_used(command, channel)
             self.irc.send_message(channel, resp)
             return
 
-        ##### USER LEVEL CHECKING WILL NEED REVISION
-        # if there's a required userlevel, validate it.
-        #if commands.check_has_ul(username, command):
+        # USER LEVEL CHECKING WILL NEED REVISION
+        # if there"s a required userlevel, validate it.
+        # if commands.check_has_ul(username, command):
         #    if username not in user_dict["chatters"]["moderators"]:
-        #        resp = '(%s) : %s' % (
+        #        resp = "(%s) : %s" % (
         #            username, "This is a moderator-only command!")
         #        pbot(resp, channel)
         #        self.irc.send_message(channel, resp)
@@ -138,6 +138,6 @@ class Roboraj(object):
         commands.update_last_used(command, channel)
 
         if result:
-            resp = '(%s) : %s' % (username, result)
+            resp = "(%s) : %s" % (username, result)
             pbot(resp, channel)
             self.irc.send_message(channel, resp)

@@ -13,58 +13,54 @@ def is_valid_command(command):
 
 
 def update_last_used(command, channel):
-    commands[command][channel]['last_used'] = time.time()
+    commands[command][channel]["last_used"] = time.time()
 
 
 def get_command_limit(command):
-    return commands[command]['limit']
+    return commands[command]["limit"]
 
 
 def is_on_cooldown(command, channel):
-    if time.time() - commands[command][channel]['last_used'] < commands[command]['limit']:
+    if time.time() - commands[command][channel]["last_used"] < commands[command]["limit"]:
         return True
     return False
 
 
 def get_cooldown_remaining(command, channel):
-    return round(commands[command]['limit'] - (time.time() - commands[command][channel]['last_used']))
+    return round(commands[command]["limit"] - (time.time() - commands[command][channel]["last_used"]))
 
 
 def command_user_level(command):
-    if commands[command]['ul']:
+    if commands[command]["ul"]:
         return True
-
-# def get_user_level(username, channel):
-#	if '+o' is in data.stream:
-#		return True
 
 
 def check_has_return(command):
-    if commands[command]['return'] and commands[command]['return'] != 'command':
+    if commands[command]["return"] and commands[command]["return"] != "command":
         return True
     return False
 
 
 def get_return(command):
-    return commands[command]['return']
+    return commands[command]["return"]
 
 
 def check_has_args(command):
-    if 'argc' in commands[command]:
+    if "argc" in commands[command]:
         return True
 
 
 def check_is_space_case(command):
     """Check to see if the command is a space case
-    by default it's not."""
+    by default it"s not."""
     return commands[command].get("space_case", False)
 
 
 def check_has_correct_args(message, command):
     """Check to see if message has the correct number of arguments,
-    if the commands[command]['argc'] == 1 then we can handle spaces, otherwise
+    if the commands[command]["argc"] == 1 then we can handle spaces, otherwise
     arguments are seperated by spaces"""
-    argc = commands[command]['argc']
+    argc = commands[command]["argc"]
 
     if check_is_space_case(message):
         # As long as it has a length > 1
@@ -73,7 +69,7 @@ def check_has_correct_args(message, command):
         # length of string wihtout command will have one space and one
         # character min
         return len(message_without_command) > 2
-    message = message.split(' ')
+    message = message.split(" ")
     if len(message) - 1 == argc:
         return True
     else:
@@ -81,14 +77,14 @@ def check_has_correct_args(message, command):
 
 
 def check_has_ul(username, command):
-    if 'ul' in commands[command]:
-        if 'mod' in commands[command]['ul']:
+    if "ul" in commands[command]:
+        if "mod" in commands[command]["ul"]:
             return True
     return False
 
 
 def check_returns_function(command):
-    if commands[command]['return'] == 'command':
+    if commands[command]["return"] == "command":
         return True
 
 
@@ -109,6 +105,6 @@ def pass_to_function(command, args):
         print >> sys.stdout, str(error)
         traceback.print_exc(file=sys.stdout)
         try:
-            return "How to use " + command + ": " + commands['!' + command]['usage']
+            return "How to use " + command + ": " + commands["!" + command]["usage"]
         except:
             return "Command Unavailable"
