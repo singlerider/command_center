@@ -83,9 +83,11 @@ def cron(channel):  # todo remove this arg requirement.
         print "Saving files (by channel):"
         return save_logs_to_drive()
     else:
-        print "previous_date:", previous_date, "current_date:", current_date
+        print (
+            "previous_date:", previous_date, "current_date:", current_date,
+            "@", time.strftime("%H:%M:%SZ", time.gmtime())
+            )
 
 
 if __name__ == "__main__":
     save_file_to_drive("TESTFILE.txt", "#fakechannel", "TESTDATA")
-    save_logs_to_drive()
