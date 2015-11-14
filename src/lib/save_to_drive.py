@@ -73,12 +73,17 @@ def get_log_files():
 
 
 def cron(channel):  # todo remove this arg requirement.
-    from config import previous_date
+    from src.config.config import previous_date
+    print previous_date
     current_date = time.strftime('%Y_%m_%d', time.gmtime())
     if current_date != previous_date:
+        print "Date Not Matched"
         previous_date = current_date
         print "Saving files (by channel):"
         return get_log_files()
+    else:
+        print "previous_date:", previous_date, "current_date:", current_date
+
 
 if __name__ == "__main__":
     save_file_to_drive("TESTFILE.txt", "#fakechannel", "TESTDATA")
