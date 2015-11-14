@@ -33,8 +33,9 @@ def write_to_log(channel, username, message):
             f.write("{} | {} : {}\n".format(username,
                     timestamp, str(message)))
     except Exception as error:
-        foldername = "src/logs/{}_{}".format(channel.lstrip("#"),
-                time.strftime("%Y_%m_%d"))
+        foldername = "src/logs/{}_{}".format(
+                                            channel.lstrip("#"),
+                                            time.strftime("%Y_%m_%d"))
         os.system("mkdir src/logs/{}".format(date))
         print str(error) + ": Creating new folder: " + str(date)
         write_to_log(channel, username, message)
@@ -108,9 +109,12 @@ class Roboraj(object):
 
         # check cooldown.
         if commands.is_on_cooldown(command, channel):
-            pbot("Command is on cooldown. (%s) (%s) (%ss remaining)" % (
-                command, username, commands.get_cooldown_remaining(command,
-                        channel)), channel)
+            pbot(
+                "Command is on cooldown. (%s) (%s) (%ss remaining)" %
+                (
+                    command, username,
+                    commands.get_cooldown_remaining(command, channel)), channel
+                    )
             return
         pbot("Command is valid and not on cooldown. (%s) (%s)" %
              (command, username), channel)
@@ -123,16 +127,6 @@ class Roboraj(object):
             commands.update_last_used(command, channel)
             self.irc.send_message(channel, resp)
             return
-
-        # USER LEVEL CHECKING WILL NEED REVISION
-        # if there"s a required userlevel, validate it.
-        # if commands.check_has_ul(username, command):
-        #    if username not in user_dict["chatters"]["moderators"]:
-        #        resp = "(%s) : %s" % (
-        #            username, "This is a moderator-only command!")
-        #        pbot(resp, channel)
-        #        self.irc.send_message(channel, resp)
-        #        return
 
         result = commands.pass_to_function(command, args)
         commands.update_last_used(command, channel)
