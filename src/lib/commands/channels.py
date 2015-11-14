@@ -7,4 +7,5 @@ def channels(token):
     resp = requests.get(url)
     data = json.loads(resp.content)
     channels = ["#" + x["name"] for x in data["channels"]]
+    print channels
     return channels

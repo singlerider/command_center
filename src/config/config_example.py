@@ -20,15 +20,11 @@ for channel in channels_to_join:
     channel = channel.lstrip("#")
 
 config = {
-    # details required to login to twitch IRC server
+    # details required to login to Slack IRC server
     "server": "YOURSLACKCHANNEL.irc.slack.com",
     "port": 6667,
     "username": "YOURUSERNAME",
     "password": "YOURPASSWORD,
-
-    "google_api": "",  # API Key
-    "google_client": "",  # Client ID
-    "google_secret": "",  # Client Secret
 
     "debug": True,
     "log_messages": True,
