@@ -12,7 +12,7 @@ to enable IRC gateways, then head to
 YOURSLACKCHANNEL.slack.com/account/gateways
 """
 
-slack_token = "xoxp-7133074851-12463102752-14587486006-cf5d1a80e6"
+slack_token = ""
 # Slack Token obtained from https://api.slack.com/web#basics
 channels_to_join = channels(slack_token)
 
