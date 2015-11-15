@@ -2,6 +2,7 @@ from src.config.config import slack_token
 import requests
 import json
 
+
 def emojis():
     url = "https://slack.com/api/emoji.list?token={0}".format(slack_token)
     resp = requests.get(url)

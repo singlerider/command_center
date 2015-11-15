@@ -11,10 +11,9 @@ import time
 import os
 
 
-def get_log_files():
+def get_log_files(previous_date):
     log_files = []
-    date = time.strftime("%Y_%m_%d", time.gmtime())
-    folder = "src/logs/{0}/".format(date)
+    folder = "src/logs/{0}/".format(previous_date)
     for log in os.listdir(folder):
         if log.endswith(".txt"):
             log_files.append("{0}{1}".format(folder, log))
@@ -62,8 +61,8 @@ def save_file_to_drive(log, channel, data):  # log = filename to save as, data
     log.Upload(param={"convert": True})  # Files.update()
 
 
-def save_logs_to_drive():
-    folder, log_files = get_log_files()
+def save_logs_to_drive(previous_date):
+    folder, log_files = get_log_files(previous_date)
     for log in log_files:
         channel = log.rstrip(".txt").split("/")[3]
         filename = channel + ".txt"
@@ -74,19 +73,23 @@ def save_logs_to_drive():
 
 
 def cron(channel):  # todo remove this arg requirement.
-    from src.config.config import previous_date
-    print previous_date
-    current_date = time.strftime("%Y_%m_%d", time.gmtime())
-    if current_date != previous_date:
-        print "Date Not Matched"
-        previous_date = current_date
-        print "Saving files (by channel):"
-        return save_logs_to_drive()
-    else:
-        print (
-            "previous_date:", previous_date, "current_date:", current_date,
-            "@", time.strftime("%H:%M:%SZ", time.gmtime())
-            )
+    try:
+        from src.config.config import previous_date
+        print previous_date
+        current_date = time.strftime("%Y_%m_%d", time.gmtime())
+        if current_date != previous_date:
+            print "Date Not Matched"
+            print "Saving files (by channel):"
+            save_logs_to_drive(previous_date)
+            previous_date = current_date
+            return
+        else:
+            print (
+                "previous_date:", previous_date, "current_date:", current_date,
+                "@", time.strftime("%H:%M:%SZ", time.gmtime())
+                )
+    except Exception as error:
+        print str(error)
 
 
 if __name__ == "__main__":
