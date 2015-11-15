@@ -74,14 +74,17 @@ def save_logs_to_drive(previous_date):
 
 def cron(channel):  # todo remove this arg requirement.
     try:
-        from src.config.config import previous_date
+        from src.config.config import previous_date  # gets assigned as program
+        # is first run
         print previous_date
         current_date = time.strftime("%Y_%m_%d", time.gmtime())
         if current_date != previous_date:
+            date_to_log = previous_date  # reassign this to a new variable
+            previous_date = current_date  # reset this here just in case cron
+            # job takes more than one minute
             print "Date Not Matched"
             print "Saving files (by channel):"
-            save_logs_to_drive(previous_date)
-            previous_date = current_date
+            save_logs_to_drive(date_to_log)  # save all logs to drive
             return
         else:
             print (
