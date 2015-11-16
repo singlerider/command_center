@@ -12,8 +12,8 @@ import os
 import json
 import ast
 
-#with open("src/lib/date.txt", "w") as f:
-#    f.write(time.strftime("%Y_%m_%d", time.gmtime()))
+with open("src/lib/date.txt", "w") as f:
+    f.write(time.strftime("%Y_%m_%d", time.gmtime()))
 
 
 def get_credentials():
