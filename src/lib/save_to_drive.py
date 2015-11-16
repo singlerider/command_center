@@ -104,11 +104,7 @@ def save_file_to_drive(drive, log, channel, data, folders, previous_date):
     log = drive.CreateFile({"title": title,
                             "parents":  [{"id": folders[channel]}]
                             })
-    log.SetContentString("Temporary")
-    log.Upload(param={"convert": True})  # Files.insert()
     log["title"] = title  # Change title of the file
-    log.Upload(param={"convert": True})  # Files.patch()
-    content = log.GetContentString()  # "Hello"
     log.SetContentFile(
         "src/logs/{0}/{1}.txt".format(
             previous_date.rstrip("/n"), channel))
