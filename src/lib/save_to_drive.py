@@ -109,7 +109,9 @@ def save_file_to_drive(drive, log, channel, data, folders, previous_date):
     log["title"] = title  # Change title of the file
     log.Upload(param={"convert": True})  # Files.patch()
     content = log.GetContentString()  # "Hello"
-    log.SetContentString(data)
+    log.SetContentFile(
+        "src/logs/{0}/{1}.txt".format(
+            previous_date.rstrip("/n"), channel))
     log.Upload(param={"convert": True})  # Files.update()
 
 
@@ -143,7 +145,6 @@ def cron(channel):  # todo remove this arg requirement.
             "previous_date:", previous_date, "current_date:", current_date,
             "@", time.strftime("%H:%M:%SZ", time.gmtime())
             )
-
 
 
 if __name__ == "__main__":
