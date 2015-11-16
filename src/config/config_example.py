@@ -1,9 +1,7 @@
 from src.lib.commands.channels import channels
 import src.lib.save_to_drive as save_to_drive
-import time
 global config
 
-previous_date = time.strftime("%Y_%m_%d", time.gmtime())
 
 """
 Head over to
@@ -24,7 +22,7 @@ config = {
     "server": "YOURSLACKCHANNEL.irc.slack.com",
     "port": 6667,
     "username": "YOURUSERNAME",
-    "password": "YOURPASSWORD,
+    "password": "YOURPASSWORD-novoice",
 
     "debug": True,
     "log_messages": True,
@@ -34,7 +32,7 @@ config = {
     # Cron jobs.
     "cron": {
         "#general": [
-            (60, True, save_to_drive.cron)  # run cron job every 60 seconds
+            (10, True, save_to_drive.cron)
         ],
     },
 }
