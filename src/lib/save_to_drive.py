@@ -85,17 +85,21 @@ def create_folders(drive, logs_folder_id, previous_date):
             folders[entry["title"]] = entry["id"]  # channel = id
     print "folders", folders
     path = "src/logs/{0}/".format(previous_date.rstrip("\n"))
-    for log in os.listdir(path):
-        if log.endswith(".txt"):
-            channel = log.rstrip(".txt")
-            if channel not in folders:
-                folder = drive.CreateFile(
-                    {'title': channel,
-                        "parents":  [{"id": logs_folder_id}],
-                        "mimeType": "application/vnd.google-apps.folder"})
-                folder.Upload()
-                print "Creating folder for {0}.".format(channel)
-                folders[channel] = folder["id"]
+    try:
+        for log in os.listdir(path):
+            if log.endswith(".txt"):
+                channel = log.rstrip(".txt")
+                if channel not in folders:
+                    folder = drive.CreateFile(
+                        {'title': channel,
+                            "parents":  [{"id": logs_folder_id}],
+                            "mimeType": "application/vnd.google-apps.folder"})
+                    folder.Upload()
+                    print "Creating folder for {0}...".format(channel)
+                    folders[channel] = folder["id"]
+    except Exception as error:
+        print "No logs found for {0}".format(previous_date)
+        return
     return folders
 
 
@@ -116,11 +120,12 @@ def save_logs_to_drive(drive, previous_date, folders):
     for log in log_files:
         channel = log.rstrip(".txt").split("/")[3]
         filename = channel + ".txt"
-        print channel
+        print "Saving log for {0}...".format(channel)
         with open("{0}{1}".format(path, filename), "r") as f:
             data = f.read()
             save_file_to_drive(
                 drive, log, channel, data, folders, previous_date)
+    print "All done. Backup complete"
 
 
 def cron(channel):  # todo remove this arg requirement.
@@ -134,7 +139,8 @@ def cron(channel):  # todo remove this arg requirement.
             f.write(current_date)
         logs_folder_id = create_logs_folder_in_root(drive)
         folders = create_folders(drive, logs_folder_id, date_to_log)
-        save_logs_to_drive(drive, date_to_log, folders)  # save to drive
+        if folders is not None:
+            save_logs_to_drive(drive, date_to_log, folders)  # save to drive
         return
     else:
         print (
@@ -149,4 +155,5 @@ if __name__ == "__main__":
     drive = get_credentials()
     logs_folder_id = create_logs_folder_in_root(drive)
     folders = create_folders(drive, logs_folder_id, previous_date)
-    save_logs_to_drive(drive, previous_date, folders)
+    if folders is not None:
+        save_logs_to_drive(drive, previous_date, folders)

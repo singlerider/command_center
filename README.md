@@ -88,23 +88,16 @@ virtualenv), run:
 
 ## To Run
 
-### First
-
-The first time you run this, run:
-
-`python src/lib/save_to_drive.py`
-
-This will save a test file to your Google Drive account's main directory, but
-more importantly, it will ensure you are able to complete the auth flow. This
-is the only time you'll need to do this step.
-
-### Finally
-
 From the project's root directory, run:
 
 `./serve`
 
+The first time you run this, a message in the console will ask you to paste a
+link into a browser's address bar and authorize the application to modify
+your Google Drive files. After you accept, you will see a code that should be
+pasted back into the console. After this initial authorization, the app
+will be connected to your GDrive account.
+
 ## TODO
 
 Fix errors for foreign character encoding
-Integrate folder structure for GDrive uploads
