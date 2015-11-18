@@ -142,11 +142,6 @@ def cron(channel):  # todo remove this arg requirement.
         if folders is not None:
             save_logs_to_drive(drive, date_to_log, folders)  # save to drive
         return
-    else:
-        print (
-            "previous_date:", previous_date, "current_date:", current_date,
-            "@", time.strftime("%H:%M:%SZ", time.gmtime())
-            )
 
 
 if __name__ == "__main__":
