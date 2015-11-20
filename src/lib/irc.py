@@ -10,7 +10,6 @@ threshold = 5 * 60  # five minutes, make this whatever you want
 
 
 class irc:
-
     def __init__(self, config):
         self.config = config
         self.ircBuffer = ""
@@ -34,18 +33,15 @@ class irc:
         return line
 
     def check_for_message(self, data):
-        if re.match(r'^:[a-zA-Z0-9_]+\![a-zA-Z0-9_]+@(irc\.tinyspeck\.com\
-|\.testserver\.local) PRIVMSG #[a-zA-Z0-9_]+ :.+$', data):
+        if re.match(r'^:[a-zA-Z0-9_]+\![a-zA-Z0-9_]+@(irc\.tinyspeck\.com|\.testserver\.local) PRIVMSG #[a-zA-Z0-9_]+ :.+$', data):
             return True
 
     def check_for_join(self, data):
-        if re.match(r'^:[a-zA-Z0-9_]+\![a-zA-Z0-9_]+@(irc\.tinyspeck\.com\
-|\.testserver\.local) JOIN #[a-zA-Z0-9_]', data):
+        if re.match(r'^:[a-zA-Z0-9_]+\![a-zA-Z0-9_]+@(irc\.tinyspeck\.com|\.testserver\.local) JOIN #[a-zA-Z0-9_]', data):
             return True
 
     def check_for_part(self, data):
-        if re.match(r'^:[a-zA-Z0-9_]+\![a-zA-Z0-9_]+@(irc\.tinyspeck\.com\
-|\.testserver\.local) PART #[a-zA-Z0-9_]', data):
+        if re.match(r'^:[a-zA-Z0-9_]+\![a-zA-Z0-9_]+@(irc\.tinyspeck\.com|\.testserver\.local) PART #[a-zA-Z0-9_]', data):
             return True
 
     def check_is_command(self, message, valid_commands):
@@ -70,13 +66,10 @@ class irc:
             sys.exit()
 
     def get_message(self, data):
-        return re.match(
-            r'^:(?P<username>.*?)!.*?PRIVMSG (?P<channel>.*?) \
-:(?P<message>.*)', data).groupdict()
+        return re.match(r'^:(?P<username>.*?)!.*?PRIVMSG (?P<channel>.*?) :(?P<message>.*)', data).groupdict()
 
     def check_login_status(self, data):
-        if re.match(r'^:(testserver\.local|irc\.tinyspeck\.com) \
-NOTICE \* :Login unsuccessful\r\n$', data):
+        if re.match(r'^:(testserver\.local|irc\.tinyspeck\.com) NOTICE \* :Login unsuccessful\r\n$', data):
             return False
         else:
             return True
@@ -86,7 +79,7 @@ NOTICE \* :Login unsuccessful\r\n$', data):
         # None - sends nothing
         # String - sends this line as a message
         # List - sends each line individually.
-        #  -- technically since this is recursive you can have a tree
+        #  -- technically since this is recursive you can have a tree of messages
         #  -- [["1", ["2", "3"]], "4"] will send "1", "2", "3", "4".
         if not message:
             return
@@ -103,8 +96,7 @@ NOTICE \* :Login unsuccessful\r\n$', data):
         sock.settimeout(10)
 
         try:
-            print "Connecting to {}:{}".format(
-                self.config['server'], self.config['port'])
+            print "Connecting to {}:{}".format(self.config['server'], self.config['port'])
             sock.connect((self.config['server'], self.config['port']))
         except:
             pp('Cannot connect to server (%s:%s).' %
@@ -121,8 +113,7 @@ NOTICE \* :Login unsuccessful\r\n$', data):
 
         loginMsg = self.nextMessage()
         if "unsuccessful" in loginMsg:
-            print "Failed to login. \
-Check your oath_password and username in src/config/config.py"
+            print "Failed to login. Check your oath_password and username in src/config/config.py"
             sys.exit(1)
 
         # Wait until we're ready before starting stuff.
