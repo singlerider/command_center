@@ -9,7 +9,7 @@ commands = {
     },
     "!help": {
         "limit": 15,
-        "return": """There is a super useful README for lorenzo at \
+        "return": """There is a super useful README for command_center at \
 https://www.github.com/singlerider/command_center""",
         "usage": "!help"
     },
