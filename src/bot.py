@@ -10,6 +10,7 @@ import lib.irc as irc_
 from lib.functions_general import *
 import lib.functions_commands as commands
 import src.lib.command_headers
+import src.lib.commands.channels
 import src.lib.cron as cron
 import sys
 import datetime
@@ -43,12 +44,14 @@ def write_to_log(channel, username, message):
 
 class Roboraj(object):
 
-    def __init__(self, config):
+    def __init__(self, config, crons):
         self.config = config
         src.lib.command_headers.initalizeCommands(config)
         self.irc = irc_.irc(config)
+        self.crons = crons
+        print self.crons
         # start threads for channels that have cron messages to run
-        cron.initialize(self.irc, self.config.get("cron", {}))
+        cron.initialize(self.irc, self.crons.get("cron", {}))
 
     def run(self):
 
@@ -134,3 +137,14 @@ class Roboraj(object):
             resp = "(%s) : %s" % (username, result)
             pbot(resp, channel)
             self.irc.send_message(channel, resp)
+
+        def join_channels_after_runtime(self):
+            pass
+
+
+def join_cron(a=None):
+    import src.config.config as config
+    import src.bot as bot
+
+    print config
+    print bot

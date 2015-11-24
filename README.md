@@ -55,7 +55,7 @@ Developer's Console.
 Click "Add Credentials" and generate an API Key (Server Key) and an OAuth
 2.0 Client ID (Other)
 
-Download your generated clien_secret json file and rename it to
+Download your generated client_secret json file and rename it to
 "client_secrets.json" then place it in your project's root directory - PyDrive
 looks for this specific file in this specific place.
 

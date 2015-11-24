@@ -15,7 +15,7 @@ with open("src/lib/date.txt", "w") as f:  # save current date when app starts
     f.write(time.strftime("%Y_%m_%d", time.gmtime()))
 
 
-def get_credentials():  # Saves valid credentials and points the app to they
+def get_credentials():  # Saves valid credentials and points the app to the
     # correct Google Drive account and folders
     # = the content (messages to save)
     """Gets valid user credentials from storage.
