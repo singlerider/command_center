@@ -49,7 +49,6 @@ class Roboraj(object):
         src.lib.command_headers.initalizeCommands(config)
         self.irc = irc_.irc(config)
         self.crons = crons
-        print self.crons
         # start threads for channels that have cron messages to run
         cron.initialize(self.irc, self.crons.get("cron", {}))
 
@@ -140,11 +139,3 @@ class Roboraj(object):
 
         def join_channels_after_runtime(self):
             pass
-
-
-def join_cron(a=None):
-    import src.config.config as config
-    import src.bot as bot
-
-    print config
-    print bot
