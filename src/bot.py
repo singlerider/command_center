@@ -6,6 +6,7 @@ Command Center for Software Development Emergencies!!!!!!!!
 by Shane Engelman (me@5h4n3.com)
 """
 
+from src.lib.queries.message_queries import *
 import lib.irc as irc_
 from lib.functions_general import *
 import lib.functions_commands as commands
@@ -40,6 +41,7 @@ def write_to_log(channel, username, message):
         os.system("mkdir src/logs/{}".format(date))
         print str(error) + ": Creating new folder: " + str(date)
         write_to_log(channel, username, message)
+        save_message(username, channel, message)
 
 
 class Roboraj(object):
@@ -71,6 +73,7 @@ class Roboraj(object):
                 resp1 = "%s" % (channel)
                 resp2 = "%s" % (message)
                 write_to_log(channel, username, message)
+                save_message(username, channel, message)
                 part = message.split(" ")[0]
                 valid = False
                 if commands.is_valid_command(message):
