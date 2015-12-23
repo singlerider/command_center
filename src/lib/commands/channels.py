@@ -8,7 +8,8 @@ def initial_channels(token=None):
     url = "https://slack.com/api/channels.list?token={0}".format(token)
     resp = requests.get(url)
     data = json.loads(resp.content)
-    channels = ["#" + x["name"] for x in data["channels"]]
+    channels = ["#general"]
+    #channels = ["#" + x["name"] for x in data["channels"]]
     print channels
     return channels
 
